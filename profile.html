@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💰 ZYYCASH REFERRAL | PROFILE</title>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* SAMA DENGAN CSS SEBELUMNYA */
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary-gradient: linear-gradient(135deg, #FF2D95 0%, #C623FF 100%);
+      --glass-bg: rgba(20, 20, 30, 0.85);
+      --glass-border: rgba(255, 45, 149, 0.25);
+      --glass-shadow: 0 20px 60px rgba(255, 45, 149, 0.15);
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --pink-medium: #FF2D95;
+      --pink-light: #FF6BC9;
+      --bottom-nav-bg: rgba(25, 25, 40, 0.95);
+      --card-bg: rgba(30, 30, 45, 0.9);
+      --danger: #F87171;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 30%, #16213E 70%, #0F0F1A 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      width: 100%;
+      color: var(--text-primary);
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 90px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      padding: 32px 28px;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .header-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      display: inline-block;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .header h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .profile-section {
+      background: var(--glass-bg);
+      backdrop-filter: blur(40px);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 20px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .profile-title {
+      color: var(--text-primary);
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-title i {
+      color: var(--pink-medium);
+    }
+
+    .profile-data {
+      display: grid;
+      gap: 16px;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 45, 149, 0.1);
+      width: 100%;
+    }
+
+    .data-row:last-child {
+      border-bottom: none;
+    }
+
+    .data-label {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
+
+    .data-value {
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+      text-align: right;
+      max-width: 60%;
+      word-break: break-word;
+    }
+
+    .copy-btn {
+      background: rgba(255, 45, 149, 0.15);
+      border: 1px solid rgba(255, 45, 149, 0.3);
+      color: var(--pink-medium);
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: 12px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 45, 149, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 20px;
+      border-radius: 20px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      background: var(--primary-gradient);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 16px 40px rgba(255, 45, 149, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 20px;
+      box-sizing: border-box;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+      box-shadow: 0 16px 40px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 50px rgba(255, 45, 149, 0.5);
+    }
+
+    /* BOTTOM NAV SAMA */
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 480px;
+      background: var(--bottom-nav-bg);
+      backdrop-filter: blur(60px) saturate(200%);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        0 20px 60px rgba(255, 45, 149, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      display: flex;
+      padding: 14px 0;
+      z-index: 1000;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      min-width: 0;
+    }
+
+    .nav-item.active {
+      color: var(--pink-medium);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 3px;
+      background: var(--primary-gradient);
+      border-radius: 0 0 3px 3px;
+    }
+
+    .nav-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: block;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 16px; }
+      .card { padding: 28px 24px; }
+      .header h1 { font-size: 28px; }
+      .header-icon { font-size: 56px; }
+      .bottom-nav { bottom: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      .card { padding: 24px 20px; }
+      .header h1 { font-size: 24px; }
+      .header-icon { font-size: 48px; }
+      .bottom-nav { width: calc(100% - 24px); padding: 10px 0; }
+      .nav-icon { font-size: 20px; }
+      .nav-label { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="card">
+      <div class="header">
+        <div class="header-icon">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <h1>PROFIL AKUN</h1>
+        <p>Kelola informasi dan pengaturan akun Anda</p>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-title">
+          <i class="fas fa-id-card"></i> Informasi Akun
+        </div>
+        <div class="profile-data">
+          <div class="data-row">
+            <span class="data-label">Email</span>
+            <span class="data-value" id="profileEmail">-</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">User ID</span>
+            <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
+              <span class="data-value" style="font-family: 'SF Mono', monospace; font-size: 13px; color: var(--pink-medium);" id="profileUserId">-</span>
+              <button class="copy-btn" onclick="copyToClipboard('profileUserId')">
+                <i class="fas fa-copy"></i> Salin
+              </button>
+            </div>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Role</span>
+            <span class="data-value" id="profileRole">-</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Status</span>
+            <span class="data-value" id="profileStatus">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-title">
+          <i class="fas fa-chart-bar"></i> Statistik Referral
+        </div>
+        <div class="profile-data">
+          <div class="data-row">
+            <span class="data-label">Referral Sukses</span>
+            <span class="data-value" id="profileReferralCount">0</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Total Pendapatan</span>
+            <span class="data-value" id="profileTotalEarnings">Rp0</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Saldo Saat Ini</span>
+            <span class="data-value" style="color: #fbbf24;" id="profileBalance">Rp0</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Kode Referral</span>
+            <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
+              <span class="data-value" style="font-family: 'SF Mono', monospace; color: var(--pink-medium);" id="profileReferralCode">-</span>
+              <button class="copy-btn" onclick="copyToClipboard('profileReferralCode')">
+                <i class="fas fa-copy"></i> Salin
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-danger" onclick="confirmLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+        KELUAR DARI AKUN
+      </button>
+
+      <div style="text-align: center; margin-top: 32px; color: var(--text-secondary); font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fas fa-shield-alt" style="color: var(--pink-medium);"></i> Data terenkripsi dan aman
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='/home'">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-label">HOME</div>
+    </div>
+    <div class="nav-item" onclick="window.location.href='/referral'">
+      <div class="nav-icon"><i class="fas fa-user-friends"></i></div>
+      <div class="nav-label">REFERRAL</div>
+    </div>
+    <div class="nav-item" onclick="window.location.href='/withdraw'">
+      <div class="nav-icon"><i class="fas fa-wallet"></i></div>
+      <div class="nav-label">TARIK</div>
+    </div>
+    <div class="nav-item" onclick="window.location.href='/riwayat'">
+      <div class="nav-icon"><i class="fas fa-history"></i></div>
+      <div class="nav-label">RIWAYAT</div>
+    </div>
+    <div class="nav-item active" onclick="window.location.href='/profile'">
+      <div class="nav-icon"><i class="fas fa-user"></i></div>
+      <div class="nav-label">PROFILE</div>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCf230zCliSZ9EYLByMnmflqw8sOz328Uc",
+        authDomain: "database-cupz.firebaseapp.com",
+        projectId: "database-cupz",
+        storageBucket: "database-cupz.firebasestorage.app",
+        messagingSenderId: "343357519412",
+        appId: "1:343357519412:web:dce862636c7c459e6a3c61"
+    };
+
+    try {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+    } catch (error) {
+        console.error("❌ Firebase init error:", error);
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUser = null;
+    let userData = {};
+
+    function formatRupiah(amount) {
+        return 'Rp' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event.target.closest('.copy-btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+
+    function confirmLogout() {
+        if (confirm('Yakin ingin logout dari akun ini?')) {
+            logout();
+        }
+    }
+
+    async function logout() {
+        try {
+            await auth.signOut();
+            window.location.href = '/login.html';
+        } catch (error) {
+            console.error('Error logging out:', error);
+            alert('Error saat logout: ' + error.message);
+        }
+    }
+
+    function updateProfileUI() {
+        if (!currentUser || !userData) return;
+        
+        document.getElementById('profileEmail').textContent = currentUser.email;
+        document.getElementById('profileUserId').textContent = currentUser.uid;
+        document.getElementById('profileRole').innerHTML = '<span style="background: rgba(255, 45, 149, 0.2); color: #FF2D95; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 700;">REFERRAL USER</span>';
+        document.getElementById('profileStatus').textContent = userData.status || 'active';
+        document.getElementById('profileReferralCode').textContent = userData.referralCode || '-';
+        document.getElementById('profileReferralCount').textContent = userData.referralCount || 0;
+        document.getElementById('profileTotalEarnings').textContent = formatRupiah((userData.referralCount || 0) * 250);
+        document.getElementById('profileBalance').textContent = formatRupiah(userData.balance || 0);
+    }
+
+    // Auth State Listener
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUser = user;
+            
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    userData = userDoc.data();
+                    updateProfileUI();
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        } else {
+            window.location.href = '/login.html';
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        console.log('🚀 PROFILE Page Loaded');
+    });
+  </script>
+</body>
+</html>
